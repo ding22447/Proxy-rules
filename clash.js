@@ -315,15 +315,18 @@ function main(config) {
     /(重置时间|重置日|刷新时间|刷新日|下次重置|下次刷新|到期时间|续费时间|更新时间|reset\s*(time|day)?|renew(?:al)?\s*(time|date|day)?)/i
   ];
 
+  const subscriptionTrafficValuePattern = /^\s*\d+(?:\.\d+)?\s*(?:[KMGTPE]i?B?|B)\s*(?:\||\/)\s*\d+(?:\.\d+)?\s*(?:[KMGTPE]i?B?|B)\s*$/i;
+
   const noiseRegex = /(官网|异常)/i;
 
   const isSubscriptionInfoName = (name) =>
+    subscriptionTrafficValuePattern.test(name) ||
     subscriptionInfoPatterns.some(pattern => pattern.test(name));
 
   const getSubscriptionInfoPriority = (name) => {
     if (/(重置时间|重置日|刷新时间|刷新日|下次重置|下次刷新|reset\s*(time|day)?|renew(?:al)?\s*(time|date|day)?)/i.test(name)) return 3;
     if (/(到期|过期|续费|充值|套餐|结算|expire)/i.test(name)) return 2;
-    if (/(剩余|流量|traffic|upload|download|total|used|用量)/i.test(name)) return 1;
+    if (subscriptionTrafficValuePattern.test(name) || /(剩余|流量|traffic|upload|download|total|used|用量)/i.test(name)) return 1;
     return 4;
   };
 
@@ -428,7 +431,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "GitHub",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png"
     },
 
@@ -436,7 +439,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Google",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png"
     },
 
@@ -444,7 +447,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "YouTube",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/YouTube.png"
     },
 
@@ -452,7 +455,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Netflix",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netflix.png"
     },
 
@@ -460,7 +463,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Telegram",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png"
     },
 
@@ -468,7 +471,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "AI",
       "type": "select",
-      "proxies": ["Proxy", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ChatGPT.png"
     },
 
@@ -476,7 +479,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "TikTok",
       "type": "select",
-      "proxies": ["Proxy", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/TikTok.png"
     },
 
@@ -484,7 +487,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Microsoft",
       "type": "select",
-      "proxies": ["Direct", "Proxy", ...allProxyNames],
+      "proxies": ["DIRECT", "Proxy", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png"
     },
 
@@ -492,7 +495,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Apple",
       "type": "select",
-      "proxies": ["Direct", "Proxy", ...allProxyNames],
+      "proxies": ["DIRECT", "Proxy", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple.png"
     },
 
@@ -500,7 +503,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Bahamut",
       "type": "select",
-      "proxies": ["Proxy", ...bahamutNames],
+      "proxies": ["Proxy", "DIRECT", ...bahamutNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bahamut.png"
     },
 
@@ -508,7 +511,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Bilibili",
       "type": "select",
-      "proxies": ["Direct", "Proxy", ...allProxyNames],
+      "proxies": ["DIRECT", "Proxy", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/bilibili.png"
     },
 
@@ -516,7 +519,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Spotify",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Spotify.png"
     },
 
@@ -532,7 +535,7 @@ function main(config) {
       ...groupBaseOption,
       "name": "Final",
       "type": "select",
-      "proxies": ["Proxy", "Direct", ...allProxyNames],
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Final.png"
     }
   ];
