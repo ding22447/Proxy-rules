@@ -132,16 +132,16 @@ proxy-groups:
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Microsoft.png
     type: select
     proxies:
-      - Proxy
       - DIRECT
+      - Proxy
     include-all: true
 
   - name: Apple
     icon: https://fastly.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Apple.png
     type: select
     proxies:
-      - Proxy
       - DIRECT
+      - Proxy
     include-all: true
 
   - name: Bahamut
@@ -443,4 +443,3 @@ rules:
 
   # 兜底
   - MATCH,Final
-
