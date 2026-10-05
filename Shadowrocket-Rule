@@ -1,113 +1,62 @@
-# Shadowrocket-Rule 
-# Version: 0.2.2-custom-groups
+
+# Version: 0.2.2
 # Maintainer: webhuage-debug
 # Based on ianzo0/Shadowrocket-Rule
 # Updated: 2026-10-05
 #
-# 自定义分组版：
-# Proxy / GitHub / Google / YouTube / Netflix / Telegram / AI / TikTok
-# Microsoft / Apple / Bahamut / Bilibili / Spotify / Direct / Final
-#
-# 默认不启用 Script、MITM、URL Rewrite 或 HTTPS 解密。
-# 保留原配置的 Shadowrocket .conf 语法、DNS 和基础网络参数。
+# 分组精简版：保留 0.2.1 的 Shadowrocket 原生语法与 General 参数。
+# 注意：Shadowrocket 内置 PROXY / DIRECT，因此自定义主组使用“🚀 Proxy / 🌐 Direct / 🎯 Final”
+# 避免与内置策略发生名称冲突或自引用。
 
 [General]
-# 稳定版更新地址；如果此文件覆盖到原仓库同一路径，可继续自动更新。
 update-url = https://raw.githubusercontent.com/webhuage-debug/Shadowrocket-Rule/main/ianzo-cn.conf
-
-# 忽略系统 HTTP 代理设置，避免与 Shadowrocket 的 VPN 接管发生冲突。
 bypass-system = true
-
-# 私有网络、本机、局域网反向解析与公共 Wi-Fi 认证域名不进入代理。
 skip-proxy = 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,localhost,*.local,*.lan,*.home.arpa,*.in-addr.arpa,*.ip6.arpa,captive.apple.com,connectivitycheck.gstatic.com,msftconnecttest.com,msftncsi.com
-
-# TUN 模式不接管私有、环回、链路本地、文档和组播地址。
 tun-excluded-routes = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.168.0.0/16,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32,239.255.255.250/32
-
 ipv6 = false
 prefer-ipv6 = false
-
-# 直连域名优先使用 AliDNS DoH。
 dns-server = https://dns.alidns.com/dns-query
-
-# 备用加密 DNS。
 fallback-dns-server = https://dns.cloudflare.com/dns-query,https://dns.quad9.net/dns-query,https://dns.google/dns-query
-
-# 不回退系统 DNS。
 dns-fallback-system = false
 dns-direct-system = false
-
-# 直连 DNS 失败时允许经代理重试。
 dns-direct-fallback-proxy = true
-
 icmp-auto-reply = true
 private-ip-answer = true
-
-# 局域网、公共 Wi-Fi 认证、微信本地回调和 Apple 推送返回真实 IP。
 always-real-ip = localhost,*.local,*.lan,*.home.arpa,*.in-addr.arpa,*.ip6.arpa,captive.apple.com,connectivitycheck.gstatic.com,*.msftconnecttest.com,*.msftncsi.com,localhost.weixin.qq.com,*.weixin.qq.com,push.apple.com,*.push.apple.com
-
-# 所选策略不支持 UDP 时直接拒绝。
 udp-policy-not-supported-behaviour = REJECT
-
-# 劫持常见硬编码公共 DNS 的 53 端口查询。
 hijack-dns = 8.8.8.8:53,8.8.4.4:53,1.1.1.1:53,1.0.0.1:53,9.9.9.9:53,149.112.112.112:53,208.67.222.222:53,208.67.220.220:53,223.5.5.5:53,223.6.6.6:53,119.29.29.29:53,114.114.114.114:53
-
-# 如需阻止代理流量使用 QUIC/HTTP3，可取消下一行注释。
 # block-quic = all-proxy
 
-
 [Proxy]
-# 此处保持为空；用户在 Shadowrocket 首页自行添加节点或订阅。
-
+# 节点由 Shadowrocket 首页订阅/节点提供。
 
 [Proxy Group]
-# ============================================================
-# 分组结构与 Clash/Mihomo 版本保持一致，但继续使用 Shadowrocket 原生 .conf 语法。
-# include-all-proxies=true：把 Shadowrocket 中已经添加的全部节点加入当前组。
-# ============================================================
+# 主代理：全部节点直接进入此组，不再建立香港/日本/美国等中间组。
+🚀 Proxy = select,PROXY,DIRECT,include-all-proxies=true,policy-select-name=PROXY
 
-# 主代理组：仅展示全部节点，不再建立香港/日本/美国等地区中间组。
-Proxy = select,include-all-proxies=true
+GitHub = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+Google = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+YouTube = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+Netflix = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+Telegram = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+AI = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+TikTok = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
 
-# 服务分组：默认跟随 Proxy，同时允许 DIRECT 或直接选择任意具体节点。
-GitHub = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-Google = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-YouTube = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-Netflix = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-Telegram = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-AI = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-TikTok = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
+Microsoft = select,DIRECT,🚀 Proxy,PROXY,include-all-proxies=true,policy-select-name=DIRECT
+Apple = select,DIRECT,🚀 Proxy,PROXY,include-all-proxies=true,policy-select-name=DIRECT
+Bahamut = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
+Bilibili = select,DIRECT,🚀 Proxy,PROXY,include-all-proxies=true,policy-select-name=DIRECT
+Spotify = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
 
-# Microsoft / Apple 默认直连，仍可手动改为 Proxy 或任意节点。
-Microsoft = select,DIRECT,Proxy,include-all-proxies=true,policy-select-name=DIRECT
-Apple = select,DIRECT,Proxy,include-all-proxies=true,policy-select-name=DIRECT
-
-# 巴哈姆特默认走代理；如有台湾节点，可直接在组内点选对应节点。
-Bahamut = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-
-# Bilibili 默认直连。
-Bilibili = select,DIRECT,Proxy,include-all-proxies=true,policy-select-name=DIRECT
-
-# Spotify 默认跟随 Proxy。
-Spotify = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-
-# 国内流量默认直连；异常时可以切 Proxy 或指定节点。
-Direct = select,DIRECT,Proxy,include-all-proxies=true,policy-select-name=DIRECT
-
-# 所有未命中规则的流量默认走 Proxy。
-Final = select,Proxy,DIRECT,include-all-proxies=true,policy-select-name=Proxy
-
+🌐 Direct = select,DIRECT,🚀 Proxy,PROXY,include-all-proxies=true,policy-select-name=DIRECT
+🎯 Final = select,🚀 Proxy,PROXY,DIRECT,include-all-proxies=true,policy-select-name=🚀 Proxy
 
 [Rule]
-# ============================================================
-# 本地 / 局域网规则：保持硬直连，避免误操作策略组导致内网不可访问。
-# ============================================================
-
+# 本机 / 局域网
 IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
 IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
 IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
 IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
-
 DOMAIN,captive.apple.com,DIRECT
 DOMAIN,connectivitycheck.gstatic.com,DIRECT
 DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
@@ -120,97 +69,52 @@ DOMAIN-SUFFIX,home.arpa,DIRECT
 DOMAIN-SUFFIX,in-addr.arpa,DIRECT
 DOMAIN-SUFFIX,ip6.arpa,DIRECT
 
-
-# ============================================================
 # AI
-# OpenAI / Anthropic / Claude / Gemini / Copilot 统一进入 AI 组。
-# ============================================================
-
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list,AI,force-remote-dns
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anthropic/Anthropic.list,AI,force-remote-dns
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Claude/Claude.list,AI,force-remote-dns
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Gemini/Gemini.list,AI,force-remote-dns
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Copilot/Copilot.list,AI,force-remote-dns
 
-
-# ============================================================
 # GitHub / GitLab
-# ============================================================
-
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/GitHub/GitHub.list,GitHub,force-remote-dns
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/GitLab/GitLab.list,GitHub,force-remote-dns
 
+# Netflix / Disney
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Netflix/Netflix.list,Netflix,force-remote-dns
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Disney/Disney.list,🚀 Proxy,force-remote-dns
 
-# ============================================================
-# YouTube 必须放在通用 Google 规则之前。
-# ============================================================
-
+# YouTube 必须在 Google 前
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/YouTube/YouTube.list,YouTube,force-remote-dns
 
-
-# ============================================================
-# 流媒体
-# ============================================================
-
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Netflix/Netflix.list,Netflix,force-remote-dns
-
-# 没有单独建立 Disney 分组，Disney 直接跟随主 Proxy。
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Disney/Disney.list,Proxy,force-remote-dns
-
+# Spotify
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Spotify/Spotify.list,Spotify,force-remote-dns
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Bahamut/Bahamut.list,Bahamut,force-remote-dns
 
-# Bilibili 默认 Direct，因此不强制远程 DNS。
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BiliBili/BiliBili.list,Bilibili
-
-
-# ============================================================
-# TikTok / Telegram
-# ============================================================
-
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/TikTok/TikTok.list,TikTok,force-remote-dns
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Telegram/Telegram.list,Telegram,force-remote-dns
-
-
-# ============================================================
 # Google
-# ============================================================
-
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Google/Google.list,Google,force-remote-dns
 
+# TikTok
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/TikTok/TikTok.list,TikTok,force-remote-dns
 
-# ============================================================
+# Meta / X 不单独显示分组，统一跟随主代理
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Facebook/Facebook.list,🚀 Proxy,force-remote-dns
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Twitter/Twitter.list,🚀 Proxy,force-remote-dns
+
+# Telegram
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Telegram/Telegram.list,Telegram,force-remote-dns
+
 # Microsoft
-# 默认 Direct，不强制远程 DNS。
-# ============================================================
-
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Microsoft/Microsoft.list,Microsoft
 
-
-# ============================================================
-# 原配置中的 Meta / X 不再单独显示策略组，统一跟随 Proxy。
-# ============================================================
-
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Facebook/Facebook.list,Proxy,force-remote-dns
-RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Twitter/Twitter.list,Proxy,force-remote-dns
-
-
-# ============================================================
-# Apple
-# Apple Push 继续优先硬直连，其余 Apple 服务进入 Apple 分组。
-# ============================================================
-
+# Apple Push 优先直连
 DOMAIN-SUFFIX,push.apple.com,DIRECT
 RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Apple/Apple.list,Apple
 
+# Bahamut / Bilibili
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Bahamut/Bahamut.list,Bahamut,force-remote-dns
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BiliBili/BiliBili.list,Bilibili
 
-# ============================================================
 # 国内 / 兜底
-# ============================================================
-
-GEOIP,CN,Direct
-FINAL,Final
-
+GEOIP,CN,🌐 Direct
+FINAL,🎯 Final
 
 [Host]
 localhost = 127.0.0.1
