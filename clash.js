@@ -148,6 +148,13 @@ const ruleProviders = {
     "path": "./ruleset/GitHub.yaml"
   },
 
+  "Crypto": {
+    ...ruleProviderCommon,
+    "behavior": "classical",
+    "url": bmRulePrefix + "Crypto/Crypto.yaml",
+    "path": "./ruleset/Crypto.yaml"
+  },
+
   "Google": {
     ...ruleProviderCommon,
     "behavior": "classical",
@@ -225,11 +232,20 @@ const ruleProviders = {
     "path": "./ruleset/Gemini.yaml"
   },
 
-  "Copilot": {
+  // BardAI 补 Gemini 的 API 端点和 AI Studio
+  "BardAI": {
     ...ruleProviderCommon,
     "behavior": "classical",
-    "url": bmRulePrefix + "Copilot/Copilot.yaml",
-    "path": "./ruleset/Copilot.yaml"
+    "url": bmRulePrefix + "BardAI/BardAI.yaml",
+    "path": "./ruleset/BardAI.yaml"
+  },
+
+  // Anthropic 补 Claude 官网静态资源 CDN
+  "Anthropic": {
+    ...ruleProviderCommon,
+    "behavior": "classical",
+    "url": bmRulePrefix + "Anthropic/Anthropic.yaml",
+    "path": "./ruleset/Anthropic.yaml"
   }
 };
 
@@ -257,6 +273,23 @@ const rules = [
 
   // 精细化规则：放在 proxy / gfw / tld-not-cn 前面
   "RULE-SET,GitHub,GitHub",
+
+  // 虚拟货币
+  // Crypto 规则集内含 DOMAIN-KEYWORD 覆盖 binance / huobi / okx / metamask，交易所域名不必再叠一份
+  "RULE-SET,Crypto,Crypto",
+  // 规则集未收录的行情 / 浏览器 / 钱包
+  "DOMAIN-SUFFIX,dexscreener.com,Crypto",
+  "DOMAIN-SUFFIX,ave.ai,Crypto",
+  "DOMAIN-SUFFIX,pump.fun,Crypto",
+  "DOMAIN-SUFFIX,solscan.io,Crypto",
+  "DOMAIN-SUFFIX,arbiscan.io,Crypto",
+  "DOMAIN-SUFFIX,ledger.com,Crypto",
+  "DOMAIN-SUFFIX,imtoken.io,Crypto",
+  "DOMAIN-SUFFIX,bitkeep.com,Crypto",
+  "DOMAIN-SUFFIX,rabby.io,Crypto",
+  "DOMAIN-SUFFIX,tonkeeper.com,Crypto",
+  "DOMAIN-SUFFIX,coin98.com,Crypto",
+
   "RULE-SET,telegramcidr,Telegram,no-resolve",
 
   "RULE-SET,YouTube,YouTube",
@@ -267,10 +300,85 @@ const rules = [
   "RULE-SET,TikTok,TikTok",
 
   // AI 规则
+  // Copilot 不归 AI 组：Microsoft Copilot 跟随 Microsoft，GitHub Copilot 跟随 GitHub
+  // Microsoft 规则集里没有 copilot.microsoft.com，需要在这里显式指定
+  "DOMAIN-SUFFIX,copilot.microsoft.com,Microsoft",
+  "DOMAIN-SUFFIX,copilot.cloud.microsoft,Microsoft",
+  "DOMAIN-SUFFIX,copilot-workspace.githubnext.com,GitHub",
+  "DOMAIN-SUFFIX,copilotprodattachments.blob.core.windows.net,GitHub",
+
+  // 基础规则集
   "RULE-SET,OpenAI,AI",
   "RULE-SET,Claude,AI",
   "RULE-SET,Gemini,AI",
-  "RULE-SET,Copilot,AI",
+  "RULE-SET,BardAI,AI",
+  "RULE-SET,Anthropic,AI",
+
+  // 双版本产品：海外版进 AI 组，国内版由 direct / GEOSITE,CN 直连
+  // 腾讯 CodeBuddy / WorkBuddy
+  "DOMAIN-SUFFIX,workbuddy.ai,AI",
+  "DOMAIN-SUFFIX,codebuddy.ai,AI",
+  // 智谱 Z.ai
+  "DOMAIN-SUFFIX,z.ai,AI",
+  // 阿里 Qwen 国际版
+  "DOMAIN-SUFFIX,qwen.ai,AI",
+  // 月之暗面 Kimi / Moonshot
+  "DOMAIN-SUFFIX,kimi.com,AI",
+  "DOMAIN-SUFFIX,kimi.ai,AI",
+  "DOMAIN-SUFFIX,moonshot.ai,AI",
+  // 阿里 Qoder
+  "DOMAIN-SUFFIX,qoder.com,AI",
+  // MiniMax / 海螺
+  "DOMAIN-SUFFIX,minimax.io,AI",
+  "DOMAIN-SUFFIX,hailuoai.video,AI",
+  // 字节 Cici
+  "DOMAIN-SUFFIX,ciciai.com,AI",
+  // 快手 可灵
+  "DOMAIN-SUFFIX,klingai.com,AI",
+
+  // 规则集未收录的常用 AI 服务：对话 / 音频
+  "DOMAIN-SUFFIX,character.ai,AI",
+  "DOMAIN-SUFFIX,pi.ai,AI",
+  "DOMAIN-SUFFIX,perplexity.ai,AI",
+  "DOMAIN-SUFFIX,poe.com,AI",
+  "DOMAIN-SUFFIX,grok.com,AI",
+  "DOMAIN-SUFFIX,x.ai,AI",
+  "DOMAIN-SUFFIX,suno.com,AI",
+  "DOMAIN-SUFFIX,muse.ai,AI",
+
+  // 图像 / 视频生成
+  "DOMAIN-SUFFIX,sora.com,AI",
+  "DOMAIN-SUFFIX,runway.com,AI",
+  "DOMAIN-SUFFIX,runwayml.com,AI",
+  "DOMAIN-SUFFIX,lumalabs.ai,AI",
+  "DOMAIN-SUFFIX,pika.art,AI",
+  "DOMAIN-SUFFIX,ideogram.ai,AI",
+  "DOMAIN-SUFFIX,leonardo.ai,AI",
+  "DOMAIN-SUFFIX,krea.ai,AI",
+  "DOMAIN-SUFFIX,recraft.ai,AI",
+  "DOMAIN-SUFFIX,stability.ai,AI",
+  "DOMAIN-SUFFIX,civitai.com,AI",
+  "DOMAIN-SUFFIX,heygen.com,AI",
+  "DOMAIN-SUFFIX,invideo.io,AI",
+  "DOMAIN-SUFFIX,descript.com,AI",
+  "DOMAIN-SUFFIX,opus.pro,AI",
+
+  // 模型平台 / 开发工具
+  "DOMAIN-SUFFIX,huggingface.co,AI",
+  "DOMAIN-SUFFIX,mistral.ai,AI",
+  "DOMAIN-SUFFIX,replicate.com,AI",
+  "DOMAIN-SUFFIX,together.ai,AI",
+  "DOMAIN-SUFFIX,fireworks.ai,AI",
+  "DOMAIN-SUFFIX,fal.ai,AI",
+  "DOMAIN-SUFFIX,deepinfra.com,AI",
+  "DOMAIN-SUFFIX,replit.com,AI",
+  "DOMAIN-SUFFIX,v0.dev,AI",
+  "DOMAIN-SUFFIX,bolt.new,AI",
+  "DOMAIN-SUFFIX,lovable.dev,AI",
+  "DOMAIN-SUFFIX,tabnine.com,AI",
+
+  // 其他
+  "DOMAIN-SUFFIX,gamma.app,AI",
 
   // Google 使用 BlackMatrix7 的 Google 规则
   // 不是 Loyalsoldier 的 google.txt
@@ -433,6 +541,14 @@ function main(config) {
       "type": "select",
       "proxies": ["Proxy", "DIRECT", ...allProxyNames],
       "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png"
+    },
+
+    {
+      ...groupBaseOption,
+      "name": "Crypto",
+      "type": "select",
+      "proxies": ["Proxy", "DIRECT", ...allProxyNames],
+      "icon": "https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Cryptocurrency.png"
     },
 
     {
