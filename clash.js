@@ -1,8 +1,9 @@
 // ==================== [ DNS 配置优化 防泄露版 ] ====================
+// 国内 DNS 优先腾讯，其次阿里
 const domesticNameservers = [
-  "223.5.5.5",
   "119.29.29.29",
-  "https://doh.pub/dns-query"
+  "https://doh.pub/dns-query",
+  "223.5.5.5"
 ];
 
 const foreignNameservers = [
@@ -18,8 +19,8 @@ const dnsConfig = {
   "cache-algorithm": "arc",
 
   "default-nameserver": [
-    "223.5.5.5",
-    "119.29.29.29"
+    "119.29.29.29",
+    "223.5.5.5"
   ],
 
   "nameserver": [
@@ -27,13 +28,13 @@ const dnsConfig = {
   ],
 
   "proxy-server-nameserver": [
-    "223.5.5.5",
-    "119.29.29.29"
+    "119.29.29.29",
+    "223.5.5.5"
   ],
 
   "direct-nameserver": [
-    "223.5.5.5",
-    "119.29.29.29"
+    "119.29.29.29",
+    "223.5.5.5"
   ],
 
   "nameserver-policy": {
